@@ -19,6 +19,9 @@ public class MyScrollView extends ScrollView {
     private float speed;
     private int mPointerId;
     private VelocityTracker mVelocityTracker;
+    private float mYStart;
+    private float mYEnd;
+    private float mYDistance;
 
     public MyScrollView(Context context) {
         this(context, null);
@@ -43,17 +46,20 @@ public class MyScrollView extends ScrollView {
             case MotionEvent.ACTION_DOWN:
                 //触点第一个id
                 mPointerId = ev.getPointerId(0);
+                mYStart = ev.getRawY();
                 break;
 
             case MotionEvent.ACTION_MOVE:
+                mYEnd = ev.getRawY();
+                mYDistance = mYEnd - mYStart;
                 //求伪瞬时速度
-//                verTracker.computeCurrentVelocity(1000, mMaxVelocity);
-                verTracker.computeCurrentVelocity(1, (float) 10);//设置maxVelocity值为0.1时，速率大于0.01时，显示的速率都是0.01,速率小于0.01时，显示正常
+                verTracker.computeCurrentVelocity(1, (float) 10);//设置maxVelocity值为10时，速率大于10时，显示的速率都是10,速率小于10时，显示正常
                 final float velocityX = verTracker.getXVelocity(mPointerId);
                 final float velocityY = verTracker.getYVelocity(mPointerId);
                 Log.d(TAG, "x速度：" + velocityX);
                 Log.d(TAG, "y速度：" + velocityY);
-                if (Math.abs(velocityY) > 4.5f) {
+                Log.d(TAG, "y距离：" + mYDistance);
+                if (Math.abs(velocityY) > 4.5f || Math.abs(mYDistance) > dip2px(mContext,50f)) {
                     return true;
                 }
 
