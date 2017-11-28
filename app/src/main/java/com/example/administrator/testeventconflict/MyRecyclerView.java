@@ -15,8 +15,6 @@ public class MyRecyclerView extends RecyclerView {
     private boolean isTop;
     private boolean isBottom;
     private boolean isUp;//列表向上滚动
-    private float downX;
-    private float downY;
 
     public MyRecyclerView(Context context) {
         super(context);
